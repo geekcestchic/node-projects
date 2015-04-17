@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title Welcome to express.js!
+    link(href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css", rel="stylesheet")
+    link(href="/css/style.css", rel="stylesheet")
+  body
+    form(method='post', action='/cities')
+      .field
+        input(type='text', name='name', placeholder='What is your city called?')
+      .submit
+        input(type='submit', value='Search dat!')
