@@ -10,7 +10,7 @@ This app allows for users to quickly store, update, delete and view guests withi
 
 
 ###Setup
-Download the zip files, open console, go to either app sub-directory, install node https://nodejs.org/, install mongoDB https://www.mongodb.org/, initiate MongoDB, then type npm start, and you're ready to go on http://localhost:3000!
+Download the zip files (or in your chosen directory type "git init" then "git clone git@github.com:howarda9/node-project.git") , open console, go to either app sub-directory, install node https://nodejs.org/, install mongoDB https://www.mongodb.org/, initiate MongoDB, then type npm start, and you're ready to go on http://localhost:3000!
 If that's too much work, you can always check the source-code :-)
 
 ###Technologies used:
