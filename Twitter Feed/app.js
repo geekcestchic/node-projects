@@ -1,43 +1,37 @@
 var express = require('express');
-var app = express();
-var morgan = require('morgan');
+var path = require('path');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var router = express.Router();
 var server = require('http').createServer(app);
 
+var routes = require('./routes/index')
+var twit = require('./routes/twit')
+
+var app = express();
+
+//view engine setup
 app.set('view engine', 'jade');
 app.set('views','./views');
 
-app.use(morgan('dev'));
-
-router.get('/',function(req,res){
-  res.render('index',{header:'Twitter Stream'});
-});
-
-router.get('/contact',function(req,res){
-  res.render('contact',{header:'contact!'});
-})
-
-router.get('/about',function(req,res){
-  res.render('about',{header:'about!'});
-})
-
-router.post('/:searchTerm',function(req,res){
-  console.log(req)
-  // var searchTerm = res;
-  res.json('searchTerm');
-});
-
-app.use('/',router);
-app.use(express.static(__dirname + '/public'));
-
+app.use('/',routes);
+app.use('/twit',twit)
+// app.use(morgan('dev'));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 var port = process.env.PORT || 3000;
 server.listen(port);
 console.log('Server started on '+port);
 
-var io = require('socket.io')(server);
+//Twitter Setup
 var Twit = require('twit');
-
 var twitter = new Twit({
   consumer_key: 'HmdlciikP7hXlumjdwzOXHS21',
   consumer_secret: 'TjUaA0i7g29KFMg3Ciwlk4kt1vDnLCQjVZhvwf3AG2oRibPhdd',
@@ -45,24 +39,29 @@ var twitter = new Twit({
   access_token_secret: 'r5TlE5RImeHJf5s71toVy9DRUPqzYgPdlD3DViinJvCDf'
 });
 
-process.env.VARIABLE
+// error handlers
 
-// console.log(twitter)
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
 
-var stream = twitter.stream('statuses/filter',{track: 'ronaldo'}); //this is the key word in tweet bodies
-
-io.on('connect',function(socket){
-  stream.on('tweet',function(tweet){
-    var data={};
-    data.name = tweet.user.name;
-    data.screen_name = tweet.user.screen_name;
-    data.text = tweet.text;
-    data.user_profile_image = tweet.user.profile_image_url;
-    socket.emit('tweets', data);
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
   });
 });
-
-
 
 
 
