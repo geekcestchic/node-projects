@@ -33,23 +33,19 @@ router.delete('/deleteuser/:id',function(req,res){
 });
 
 /*
-* EDIT to edituser.
+* UPDATE to updateuser.
 */
-router.put('/edituser/:id',function(req,res){
+router.put('/updateuser/:id',function(req,res){
   var db = req.db;
+  //defining which user we want to update
   var userToUpdate = req.params.id;
-  db.collection('userlist').findById(userToUpdate,function(err,p){
-    if(!p){
-      return next(new Error('Could not load Document'));
-    } else {
-      //update the file
-      p.username = req.body.username;
-      p.username = req.body.username;
-      p.username = req.body.username;
-
-      p.save;
-    }
-    
+  console.log(userToUpdate)
+  //this is the data we want to send to the ID
+  var doc = {$set: req.body};
+  console.log(doc)
+  //updating the user by his ID
+  db.collection('userlist').updateById(userToUpdate,doc,function(err,result){
+    res.send((result === 1) ? { msg: '' } : { msg:'error: ' + err });
   });
 });
 

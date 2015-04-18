@@ -1,5 +1,6 @@
 // Userlist data array for filling in info box
 var userListData = [];
+var thisUserId;
 
 // DOM Ready =============================================================
 $(document).ready(function() {
@@ -7,12 +8,19 @@ $(document).ready(function() {
     populateTable();
     // Username link click
     $('#userList table tbody').on('click', 'td a.linkshowuser', showUserInfo);
+    //make add user form appear
+    $('button#showNewUserForm').on('click', showNewUserForm);
     // Add User button click
     $('#btnAddUser').on('click', addUser);
     // Delete User link click
     $('#userList table tbody').on('click', 'td a.linkdeleteuser', deleteUser);
     // Update User link click
     $('#userList table tbody').on('click', 'td a.linkedituser', editUser);
+    //Make the PUT request to the database
+    $('#editUser button#btnEditUser').on('click', updateUser);
+    //Close the parent div when clicking on the X
+    $('.close').on('click',closeParentDiv)
+
 });
 
 // Functions =============================================================
@@ -49,19 +57,22 @@ function showUserInfo(event) {
 
     // Retrieve username from link rel attribute
     var thisUserName = $(this).attr('rel');
-
     // Get Index of object based on id value
     var arrayPosition = userListData.map(function(arrayItem) { return arrayItem.username; }).indexOf(thisUserName);
-
     // Get our User Object
     var thisUserObject = userListData[arrayPosition];
-
+    //make box appear
+    $('#userInfo').toggleClass('hidden');
     //Populate Info Box
     $('#userInfoName').text(thisUserObject.fullname);
     $('#userInfoAge').text(thisUserObject.age);
     $('#userInfoGender').text(thisUserObject.gender);
     $('#userInfoLocation').text(thisUserObject.location);
 
+};
+// Show new user form
+function showNewUserForm(){
+    $('#addUser').removeClass('hidden');
 };
 
 // Add User
@@ -98,7 +109,7 @@ function addUser(event){
 
                 // Clear the form inputs
                 $('#addUser fieldset input').val('');
-
+                $('#addUser').addClass('hidden');
                 // Update the table
                 populateTable();
 
@@ -146,6 +157,67 @@ function deleteUser(event){
 };
 // Edit User
 function editUser(event){
+    
+    // Prevent Link from Firing
     event.preventDefault();
-    console.log('edit user')
+    //Make form appear
+    $('#editUser').removeClass('hidden');
+    // Retrieve username from link rel attribute
+    thisUserId = $(this).attr('rel');
+    // Get Index of object based on id value
+    var arrayPosition = userListData.map(function(arrayItem) { return arrayItem._id; }).indexOf(thisUserId);
+    // Get our User Object
+    var thisUserObject = userListData[arrayPosition];
+
+    //Populate Info Box
+    console.log(thisUserObject.username)
+    $('#editUser input#editUserName').val(thisUserObject.username);
+    $('#editUser input#editUserAge').val(thisUserObject.age);
+    $('#editUser input#editUserGender').val(thisUserObject.gender);
+    $('#editUser input#editUserLocation').val(thisUserObject.location);
+    $('#editUser input#editUserFullname').val(thisUserObject.fullname);
+    $('#editUser input#editUserEmail').val(thisUserObject.email);
+
 };
+
+function updateUser(event){
+    //prevent redirection from button
+    event.preventDefault();
+    
+    //Pop up a confirmation dialog
+    var confirmation = confirm('Are you sure the info for the user is correct?');
+    //creating the updated user object
+    var updatedUser = {
+        'username': $('#editUser input#editUserName').val(),
+        'email': $('#editUser input#editUserEmail').val(),
+        'fullname': $('#editUser input#editUserFullname').val(),
+        'age': $('#editUser input#editUserAge').val(),
+        'location': $('#editUser input#editUserLocation').val(),
+        'gender': $('#editUser input#editUserGender').val()
+    }
+    
+    //Check and make sure the user is confirmed
+    if (confirmation === true){
+        $.ajax({
+            type: 'PUT',
+            url: '/users/updateuser/' + thisUserId,
+            data: updatedUser,
+            dataType: 'JSON'
+        }).done(function(response){
+            // Clear the form inputs
+            $('#editUser fieldset input').val('');
+            $('#editUser').addClass('hidden');
+            populateTable();
+
+        });
+    } else { 
+        //do nothing if they don't confirm
+        return false;
+    }
+};
+
+function closeParentDiv(event){
+    console.log(event.target.parentElement);
+    var divToClose = event.target.parentElement;
+    $(divToClose).addClass('hidden');
+}

@@ -1,70 +1,78 @@
 extends layout
 
 block content
-    h1= title
-    p The tool to store your guestlist
+    header
+        h1= title
+        p The tool to manage your guests
 
     // Wrapper
     #wrapper
-        // USER INFO
-        #userInfo
-            h2 Guest Info
-            p
-                strong Name:
-                |  <span id='userInfoName'></span>
-                br
-                strong Age:
-                |  <span id='userInfoAge'></span>
-                br
-                strong Gender:
-                |  <span id='userInfoGender'></span>
-                br
-                strong Location:
-                |  <span id='userInfoLocation'></span>
-        // USER INFO
-
         // USER LIST
         h2 Guest List
+        button#showNewUserForm + new guest
         #userList
             table
                 thead
-                    th UserName
+                    th Company
                     th Email
                     th Not attending?
                     th Wrong info?
                 tbody
         // /USER LIST
-
-        // ADD USER
-        h2 Add Guest
-        #addUser
-            fieldset
-                input#inputUserName(type='text', placeholder='Username')
-                input#inputUserEmail(type='text', placeholder='Email')
-                br
-                input#inputUserFullname(type='text', placeholder='Full Name')
-                input#inputUserAge(type='text', placeholder='Age')
-                br
-                input#inputUserLocation(type='text', placeholder='Location')
-                input#inputUserGender(type='text', placeholder='gender')
-                br
-                button#btnAddUser Add Guest
-        // /ADD USER
-
-        // EDIT USER
-        h2 Edit Guest Info
-        #editUser
-            fieldset
-                input#editUserName(type='text', placeholder='Username')
-                input#editUserEmail(type='text', placeholder='Email')
-                br
-                input#editUserFullname(type='text', placeholder='Full Name')
-                input#editUserAge(type='text', placeholder='Age')
-                br
-                input#editUserLocation(type='text', placeholder='Location')
-                input#editUserGender(type='text', placeholder='gender')
-                br
-                button#btnEditUser Update
-        // /EDIT USER
-
     // /WRAPPER
+    
+    // USER INFO
+    #userInfo.partial.hidden
+        h2 Guest Info
+        .close X
+        p
+            strong Name:
+            |  <span id='userInfoName'></span>
+            br
+            strong Age:
+            |  <span id='userInfoAge'></span>
+            br
+            strong Gender:
+            |  <span id='userInfoGender'></span>
+            br
+            strong Location:
+            |  <span id='userInfoLocation'></span>
+    // USER INFO
+
+    // ADD USER
+    
+    #addUser.partial.hidden
+        h2 Add Guest
+        .close X
+        fieldset
+            input#inputUserName(type='text', placeholder='Company')
+            input#inputUserEmail(type='text', placeholder='Email')
+            br
+            input#inputUserFullname(type='text', placeholder='Full Name')
+            input#inputUserAge(type='text', placeholder='Age')
+            br
+            input#inputUserLocation(type='text', placeholder='Location')
+            input#inputUserGender(type='text', placeholder='gender')
+            br
+            button#btnAddUser Add Guest
+    // /ADD USER
+
+    // EDIT USER
+    
+    #editUser.partial.hidden
+        h2 Edit Guest Info
+        .close X
+        fieldset
+            input#editUserName(type='text', placeholder='Company')
+            input#editUserEmail(type='text', placeholder='Email')
+            br
+            input#editUserFullname(type='text', placeholder='Full Name')
+            input#editUserAge(type='text', placeholder='Age')
+            br
+            input#editUserLocation(type='text', placeholder='Location')
+            input#editUserGender(type='text', placeholder='gender')
+            br
+            button#btnEditUser Update
+    // /EDIT USER
+
+    

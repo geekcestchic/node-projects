@@ -1,0 +1,51 @@
+fieldset {
+  border:0;
+  padding:0; 
+  margin:0;
+}
+  fieldset input{
+    border:none;
+    margin:3px;
+    font-family: 'Cuprum', sans-serif;
+    font-size:16px;
+  }
+
+  fieldset button{
+    background:black;
+    border:white 2px solid;
+    color:white;
+    font-size: 13px;
+    margin:20px;
+    cursor:pointer;
+  }
+
+.hidden{
+  display:none;
+}
+.close{
+  position:absolute;
+  right:20px;
+  top:20px;
+  cursor:pointer;
+}
+
+#userInfo {
+  padding:20px;
+  border:5px solid white;
+  background:rgba(0,0,0,0.8);
+  font-size: 20px;
+  text-align: left;
+}
+
+.partial{
+  width: 33%;
+  position:absolute;
+  z-index:1000;
+  left:33%;
+  height:33%;
+  top:33%;
+  overflow:scroll;
+  padding:15px;
+  border:5px solid white;
+  background:rgba(0,0,0,0.9);
+}
