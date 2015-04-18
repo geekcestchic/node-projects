@@ -62,12 +62,13 @@ function showUserInfo(event) {
     // Get our User Object
     var thisUserObject = userListData[arrayPosition];
     //make box appear
-    $('#userInfo').toggleClass('hidden');
+    $('#userInfo').removeClass('hidden');
     //Populate Info Box
     $('#userInfoName').text(thisUserObject.fullname);
     $('#userInfoAge').text(thisUserObject.age);
     $('#userInfoGender').text(thisUserObject.gender);
     $('#userInfoLocation').text(thisUserObject.location);
+    $('#userInfoUsername').text(thisUserObject.username);
 
 };
 // Show new user form
@@ -183,9 +184,6 @@ function editUser(event){
 function updateUser(event){
     //prevent redirection from button
     event.preventDefault();
-    
-    //Pop up a confirmation dialog
-    var confirmation = confirm('Are you sure the info for the user is correct?');
     //creating the updated user object
     var updatedUser = {
         'username': $('#editUser input#editUserName').val(),
@@ -195,25 +193,19 @@ function updateUser(event){
         'location': $('#editUser input#editUserLocation').val(),
         'gender': $('#editUser input#editUserGender').val()
     }
-    
-    //Check and make sure the user is confirmed
-    if (confirmation === true){
-        $.ajax({
-            type: 'PUT',
-            url: '/users/updateuser/' + thisUserId,
-            data: updatedUser,
-            dataType: 'JSON'
-        }).done(function(response){
-            // Clear the form inputs
-            $('#editUser fieldset input').val('');
-            $('#editUser').addClass('hidden');
-            populateTable();
+    //AJAX PUT request 
+    $.ajax({
+        type: 'PUT',
+        url: '/users/updateuser/' + thisUserId,
+        data: updatedUser,
+        dataType: 'JSON'
+    }).done(function(response){
+        // Clear the form inputs
+        $('#editUser fieldset input').val('');
+        $('#editUser').addClass('hidden');
+        populateTable();
 
-        });
-    } else { 
-        //do nothing if they don't confirm
-        return false;
-    }
+    });
 };
 
 function closeParentDiv(event){

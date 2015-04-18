@@ -4,6 +4,8 @@ block content
     header
         h1= title
         p The tool to manage your guests
+        a(href='https://github.com/howarda9/node-project', target="_blank", class="icon-link") 
+            img(src="https://s3-eu-west-1.amazonaws.com/alexandrehoward/github-icon.png", class="icon")
 
     // Wrapper
     #wrapper
@@ -28,6 +30,9 @@ block content
         p
             strong Name:
             |  <span id='userInfoName'></span>
+            br
+            strong Company:
+            |  <span id='userInfoUsername'></span>
             br
             strong Age:
             |  <span id='userInfoAge'></span>
@@ -74,5 +79,8 @@ block content
             br
             button#btnEditUser Update
     // /EDIT USER
+        
+        
+
 
     

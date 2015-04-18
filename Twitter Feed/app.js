@@ -10,7 +10,7 @@ app.set('views','./views');
 app.use(morgan('dev'));
 
 router.get('/',function(req,res){
-  res.render('index',{header:'index!'});
+  res.render('index',{header:'Twitter Stream'});
 });
 
 router.get('/contact',function(req,res){
@@ -20,28 +20,6 @@ router.get('/contact',function(req,res){
 router.get('/about',function(req,res){
   res.render('about',{header:'about!'});
 })
-
-router.get('/cities',function(req,res){
-  res.render('cities',{header:'Cities!'});
-})
-
-var cities = {
-  'Lotopia': 'Rough and mountainous',
-  'Caspiana': 'Sky-top island',
-  'Indigo': 'Vibrant and thriving',
-  'Paradise': 'Lush, green plantation',
-  'Flotilla': 'Bustling urban oasis'
-};
-
-router.post('/cities', function (request, response) {
-  var cityInfo = cities[request.params.name];
-  if(!cityInfo){
-    response.status(404).json('City not found');
-  } else {
-    response.json(cityInfo);
-  }
-});
-
 
 router.post('/:searchTerm',function(req,res){
   console.log(req)
